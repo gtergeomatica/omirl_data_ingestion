@@ -4,3 +4,5 @@
 
 cd /var/www/html/nextcloud/
 sudo -u www-data php console.php files:scan --path="concerteaux/files/vector"
+
+
