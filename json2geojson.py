@@ -26,7 +26,7 @@ except:
     print("Occorre specificare un input corretto es. python3 json2geojson.py Pluvio")
     sys.exit(2)
 
-with urllib.request.urlopen("https://omirl.regione.liguria.it/Omirl/rest/stations/Pluvio") as url:
+with urllib.request.urlopen(indirizzo) as url:
     data = json.loads(url.read().decode())
     #print(data)
 
