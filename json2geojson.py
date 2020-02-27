@@ -17,6 +17,8 @@ import simplejson as json
 
 import urllib.request, json 
 
+import datetime
+
 # assegno l'input dello script in maniera semplice
 script, input1 = argv
 
@@ -34,6 +36,26 @@ print("DATI LETTI CORRETTAMENTE")
 #exit()
 #script, in_file, out_file = argv
 
+
+print(len(data))
+
+#refDate = 2020-02-27T09:15:00
+
+
+data_reference=datetime.datetime.utcnow() - datetime.timedelta(minutes=60)
+
+print(data_reference)
+
+#date_time_obj = datetime.datetime.strptime(date_time_str, '%b %d %Y %I:%M%p')
+
+# Filter python objects with list comprehensions
+data_updated = [x for x in data if datetime.datetime.strptime(x['refDate'],'%Y-%m-%dT%H:%M:%S') > data_reference ]
+
+
+print(len(data_updated))
+
+#exit()
+
 geojson = {
     "type": "FeatureCollection",
     "features": [
@@ -44,7 +66,7 @@ geojson = {
             "coordinates": [d["lon"], d["lat"]],
             },
         "properties" : d,
-     } for d in data]
+     } for d in data_updated]
 }
 #with open(os.path.join(sys.path[0], "my_file.txt"), "r") as f:
 
