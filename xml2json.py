@@ -1,5 +1,5 @@
 #! usr/bin/env python
-#Script per convertire i json della rete OMIRL in geojson
+#Script per convertire gli XML per i grafici della rete OMIRL in json per highchart
 # si lancia in maniera diversa a seconda dei dati che si intendono recuperare
 # - python3 json2geojson.py Pluvio
 # - python3 json2geojson.py Termo
@@ -24,21 +24,47 @@ import datetime
 script, input1, input2 = argv
 
 try:
-    indirizzo = "https://omirl.regione.liguria.it/Omirl/rest/charts/MONTG/{}".format(input2,input1)
+    indirizzo = "https://omirl.regione.liguria.it/Omirl/rest/charts/{0}/{1}".format(input2,input1)
 except:
-    print("Occorre specificare un input corretto es. python3 json2geojson.py Idro MONTG")xm
+    print("Occorre specificare un input corretto es. python3 xml2json.py Idro MONTG")
     sys.exit(2)
 
 #leggo il file xml
+print(indirizzo)
 file = urllib.request.urlopen(indirizzo)
 data = file.read()
 file.close()
 
-root = et.fromstring(data
+#print(data)
 
-serie = root.attrib['dataSeries']
+root = et.fromstring(data)
 
-print(serie)
+print(len(root))
+print(root[1].attrib)
+#serie = root.attrib
+print(root[5][1][0].text)
+
+
+out_file="{}_{}.json".format(input2, input1)
+print(out_file)
+output = open(os.path.join(sys.path[0],out_file), 'w')
+
+output.write('[')
+comma_count0=0
+for dataSeries in root[5]:
+    if dataSeries.tag =='data':
+        if comma_count0 > 0:
+            output.write(',')
+        comma_count0 += 1
+        output.write('[')
+        comma_count1=0
+        for item in dataSeries:
+            if comma_count1>0:
+                output.write(',')
+            output.write(item.text)
+            comma_count1+=1
+        output.write(']')
+output.write(']')
 
 exit()
 
