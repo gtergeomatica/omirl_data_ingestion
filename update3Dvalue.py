@@ -34,7 +34,7 @@ if os.path.exists(jsonFilePath): #check if the file esists
     for i in json_feat:
         list_json[i['properties']['shortCode']] = [i['properties']['refDate'], str(i['properties']['value'])]
 else:
-    print('Il file {} non è stata trovato'.format(jsonFilePath))
+    print('Il file {} non è stato trovato'.format(jsonFilePath))
 
 if os.path.exists(jsFilePath): #check if the file esists
     print('Found!')
@@ -53,7 +53,7 @@ if os.path.exists(jsFilePath): #check if the file esists
                     k["prop"][8] = list_json[k["prop"][9]][0]
                     k["prop"][12] = list_json[k["prop"][9]][1]
 else:
-    print('Il file {} non è stata trovato'.format(jsFilePath))
+    print('Il file {} non è stato trovato'.format(jsFilePath))
 
 #write changes in the js file
 with open(jsFilePath, 'w', encoding='utf-8') as fjs:
