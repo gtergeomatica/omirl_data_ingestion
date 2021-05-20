@@ -16,13 +16,13 @@ from sys import argv
 
 script, input1, input2 = argv
 try:
-    jsonFilePath = 'C:/Users/user/Nextcloud_concertaux/vector/omirl_data_ingestion/{}.json'.format(input1)
-    id_layer = input2
+    jsonFilePath = '/home/gter/nextcloud-data/progetto_concerteaux/files/vector/omirl_data_ingestion/{}.json'.format(input1)
+    id_layer = int(input2)
 except:
     print("Occorre specificare un input corretto es. python3 update3Dvalue.py Pluvio 85")
     sys.exit(2)
 
-jsFilePath = 'C:/Users/user/Nextcloud_concertaux/media/3D/data/index/scene.js'
+jsFilePath = '/home/gter/nextcloud-data/progetto_concerteaux/files/media/3D/data/index/scene.js'
 list_json = {}
 
 if os.path.exists(jsonFilePath): #check if the file esists
@@ -33,6 +33,7 @@ if os.path.exists(jsonFilePath): #check if the file esists
     json_feat = sjson['features']
     for i in json_feat:
         list_json[i['properties']['shortCode']] = [i['properties']['refDate'], str(i['properties']['value'])]
+    #print(list_json)
 else:
     print('Il file {} non è stato trovato'.format(jsonFilePath))
 
@@ -46,12 +47,15 @@ if os.path.exists(jsFilePath): #check if the file esists
     js_feat = sjs['layers']
     #replaces date a value of the specified layer with date and value form the json file
     for index, x in enumerate(js_feat):
-        if x["id"] == input2:
+        if x["id"] == id_layer:
+            #print('entro in if')
             js_features = x["data"]["blocks"][0]["features"]
             for k in js_features:
                 if k["prop"][9] in list_json:
                     k["prop"][8] = list_json[k["prop"][9]][0]
                     k["prop"][12] = list_json[k["prop"][9]][1]
+                    print(k["prop"][8])
+                    print(k["prop"][12])
 else:
     print('Il file {} non è stato trovato'.format(jsFilePath))
 
